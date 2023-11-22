@@ -1,0 +1,75 @@
+#include <iostream>
+#include <string>
+#include <map>
+ 
+ 
+ 
+void arabicToLatin(std::string user_input){
+    std::string resault;
+    int user_num = std::stoi(user_input);
+    std::map<int, std::string> latin{
+        {1, "I"},
+        {4, "IV"},
+        {5, "V"},
+        {9, "IX"},
+        {10, "X"},
+        {40, "XL"},
+        {50, "L"},
+        {90, "XC"},
+        {100, "C"},
+        {400, "CD"},
+        {500, "D"},
+        {900, "CM"},
+        {1000, "M"}
+    };
+    
+    for(auto it = latin.rbegin(); it != latin.rend(); it++){
+        while(user_num >= it->first){
+            resault += it->second;
+            user_num -= it->first;
+        }
+    }
+    std::cout << resault << '\n';
+}
+
+
+void latinToArabic(std::string user_input) {
+    std::map<char, int> arabic = {
+        {'I', 1},
+        {'V', 5},
+        {'X', 10},
+        {'L', 50},
+        {'C', 100},
+        {'D', 500},
+        {'M', 1000}
+    };
+
+    int resault = 0;
+    size_t i;
+
+    for (i = 1; i < user_input.length(); i++) {
+        int currentValue = arabic[user_input[i - 1]];
+        int nextValue = arabic[user_input[i]];
+        
+        if(currentValue < nextValue) resault -= currentValue;
+        else resault += currentValue;
+    }
+    resault += arabic[user_input[i - 1]];
+    std::cout << resault << '\n';
+}
+    
+    
+bool inputIsNum(std::string user_input){
+    return user_input.find_first_not_of("0123456789");
+}    
+
+
+int main(){
+    std::string str;
+    std::cout << "enter your num: "; std::cin >> str;
+    
+    if(!inputIsNum(str)) latinToArabic(str);
+    else arabicToLatin(str);
+    
+    return 0;
+}
